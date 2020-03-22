@@ -25,6 +25,7 @@ rp = []
 
 @bot.register(group)       
 def returner(msg):
+    global pu,nm,rp,dt
     s = '[MUGBot]'
     if msg.member.puid not in pu:#第一次在群中出现的人的初始化
         pu.append(msg.member.puid)
@@ -37,25 +38,25 @@ def returner(msg):
         if msg.member.puid == pu[i]:
             tn = nm[i]
             si = i
-    """if (dt != (strftime("%Y{0}%m{1}%d{2}", localtime()).format('年','月','日'))):#jrrp更新
+    if (dt != (strftime("%Y{0}%m{1}%d{2}", localtime()).format('年','月','日'))):#jrrp更新
         for i in range(0,len(pu)):
             k = 0
             while (k // 100 == k % 100 // 10):
                 k = randint(0,6)+randint(0,len(MUGStr.obj)-1)*10+randint(0,len(MUGStr.obj)-1)*100
             rp[i] = k
-        dt = strftime("%Y{0}%m{1}%d{2}", localtime()).format('年','月','日')"""
+        dt = strftime("%Y{0}%m{1}%d{2}", localtime()).format('年','月','日')
     if msg.type == 'Picture':
         if randint(1,5) == 1:
             s += MUGStr.nnn[randint(0,len(MUGStr.nnn)-1)]
             group.send(s)
     elif msg.type == 'Text':
-        if randint(1,20) == 1:
+        if randint(1,1) == 1:
             if randint(1,2) == 1:
                 s += MUGStr.atr[randint(0,len(MUGStr.atr)-1)]
                 group.send(s)
             elif len(msg.text) <= 50:
                 group.send(MUGStr.rpt.format(msg.text,tn))
-        if msg.text == '.jrrp' | msg.text == '。jrrp':
+        if (msg.text == '.jrrp') | (msg.text == '。jrrp'):
             obj1 = rp[si] % 100 // 10
             a1 = MUGStr.obj[obj1]
             a2 = MUGStr.pro[obj1]
@@ -68,6 +69,5 @@ def returner(msg):
             elif rp[si]%10 == 6:
                 b1 = '诸事皆宜'
                 b2 = ''
-            group.send(MUGStr.luk[rp[si%10]])
-            group.send(MUGStr.jrrp.format(tn,dt,MUGStr.luk[rp[si%10]],a1,a2,b1,b2))
+            group.send(MUGStr.jrrp.format(tn,dt,MUGStr.luk[rp[si]%10],a1,a2,b1,b2))
 embed()
