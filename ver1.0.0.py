@@ -1,4 +1,4 @@
-#######MUGbot VER 2.0.0######
+#######MUGbot VER 3.0.0######
 ##########BY  SAIKA##########
 #———————————————————————————#
 #MODIIFYING OF THIS FILE IS##
@@ -10,8 +10,9 @@ from random import *
 from math import *
 from time import *
 from re import *
+from copy import *
 
-import MUGStr_2 as MUGStr
+import MUGStr_3 as MUGStr
 
 bot = Bot(cache_path=True)
 bot.enable_puid('wxpy_puid.pkl')
@@ -34,8 +35,8 @@ def returner(msg):
         pu.append(msg.member.puid)
         nm.append(msg.member.name)
         k = 0
-        while (k // 100 == k % 100 // 10):
-            k = randint(0,6)+randint(0,len(MUGStr.obj)-1)*10+randint(0,len(MUGStr.obj)-1)*100
+        while (k // 1000 == k % 1000 // 10):
+            k = randint(0,6)+randint(0,len(MUGStr.obj)-1)*10+randint(0,len(MUGStr.obj)-1)*1000
         rp.append(k)
     for i in range(0,len(pu)):#群成员指针
         if msg.member.puid == pu[i]:
@@ -44,8 +45,8 @@ def returner(msg):
     if (dt != (strftime("%Y{0}%m{1}%d{2}", localtime()).format('年','月','日'))):#jrrp更新
         for i in range(0,len(pu)):
             k = 0
-            while (k // 100 == k % 100 // 10):
-                k = randint(0,6)+randint(0,len(MUGStr.obj)-1)*10+randint(0,len(MUGStr.obj)-1)*100
+            while (k // 1000 == k % 1000 // 10):
+                k = randint(0,6)+randint(0,len(MUGStr.obj)-1)*10+randint(0,len(MUGStr.obj)-1)*1000
             rp[i] = k
         dt = strftime("%Y{0}%m{1}%d{2}", localtime()).format('年','月','日')
     if (rptnxt == True) & (pu[si] == rpu):
@@ -60,27 +61,27 @@ def returner(msg):
             s += MUGStr.nnn[randint(0,len(MUGStr.nnn)-1)]
             group.send(s)
     elif msg.type == 'Text':
-        if randint(1,10) == 1:
+        if randint(1,15) == 1:
             if randint(1,3) == 1:
                 s += MUGStr.atr[randint(0,len(MUGStr.atr)-1)]
                 group.send(s)
             elif len(msg.text) <= 50:
                 group.send(MUGStr.rpt.format(msg.text,tn))
-        if (msg.text == '.jrrp') | (msg.text == '。jrrp'):
-            obj1 = rp[si] % 100 // 10
-            a1 = MUGStr.obj[obj1]
-            a2 = MUGStr.pro[obj1]
-            obj2 = rp[si] // 100
-            b1 = MUGStr.obj[obj2]
-            b2 = MUGStr.con[obj2]
-            if rp[si]%10 == 0:
-                a1 = '诸事不宜'
-                a2 = ''
-            elif rp[si]%10 == 6:
-                b1 = '诸事皆宜'
-                b2 = ''
-            group.send(MUGStr.jrrp.format(tn,dt,MUGStr.luk[rp[si]%10],a1,a2,b1,b2))
-    if ('.复读' in msg.text) | ('。复读' in msg.text):#手动复读
+    if (msg.text == '.jrrp') | (msg.text == '。jrrp'):
+        obj1 = rp[si] % 1000 // 10
+        a1 = MUGStr.obj[obj1]
+        a2 = MUGStr.pro[obj1]
+        obj2 = rp[si] // 1000
+        b1 = MUGStr.obj[obj2]
+        b2 = MUGStr.con[obj2]
+        if rp[si]%10 == 0:
+            a1 = '诸事不宜'
+            a2 = ''
+        elif rp[si]%10 == 6:
+            b1 = '诸事皆宜'
+            b2 = ''
+        group.send(MUGStr.jrrp.format(tn,dt,MUGStr.luk[rp[si]%10],a1,a2,b1,b2))
+    elif (msg.text[0:3] == '.复读') | (msg.text[0:3] == '。复读'):#手动复读
         if ' ' in msg.text:
             if len(msg.text[4:]) > 50:
                 group.send(s+'爬')
@@ -91,7 +92,86 @@ def returner(msg):
             rptnxt = True
             rpu = pu[si]
             group.send(MUGStr.rptn)
-    if ('.rd' in msg.text) | ('。rd' in msg.text):#将rd转化为。r1d
+    elif (msg.text[0:8] == '.choose ') | (msg.text[0:8] == '。choose '):
+        if ' ' in msg.text[8:]:
+            x = msg.text[8:].split(' ')
+        else:
+            x = msg.text[8:].split('/')
+        if len(x) >= 2:
+            group.send(MUGStr.choice.format(x[randint(0,len(x)-1)]))
+    elif (msg.text[0:3] == '.nn') | (msg.text[0:3] == '。nn'):#更改昵称
+        if ' ' in msg.text:
+            if len(msg.text[4:]) > 30:
+                group.send(s+'爬')
+            else:
+                nm[si] = msg.text[4:]
+                group.send(MUGStr.NN.format(nm[si]))
+        else:
+            nm[si] = msg.member.name
+            group.send(MUGStr.NNForget.format(tn))
+    elif (msg.text[0:3] == '.rb') | (msg.text[0:3] == '。rb') | (msg.text[0:3] == '.rp') | (msg.text[0:3] == '。rp'):#奖励骰/惩罚骰
+        x1 = randint(1,100)
+        x2 = []
+        y  = ''
+        t  = 1
+        if len(msg.text) > 3:
+            if ' ' in msg.text:
+                t = msg.text[3:].split(' ')[0]
+                t = 1 if t == '' else int(t)
+                if t > 100:
+                    group.send(s+'爬')
+                    t = -1
+                y = msg.text[3:].split(' ')[1]
+            else:
+                t = int(msg.text[3:])
+        for i in range(0,t):
+            x2.append(randint(0,10))
+        x3 = deepcopy(x2)
+        x3.append(x1 // 10)
+        if msg.text[2] == 'b':
+            if x1 % 10 == 0:
+                while min(x3) == 0:
+                    for i in range(0,len(x3)):
+                        x3[i] = 10 if x3[i] == 0 else x3[i]
+            x = min(x3) * 10 + x1 % 10
+            k = '奖励'
+        elif msg.text[2] == 'p':
+            if x1 % 10 != 0:
+                while max(x3) == 10:
+                    for i in range(0,len(x3)):
+                        x3[i] = -1 if x3[i] == 10 else x3[i]
+            elif min(x3) == 0:
+                x3.append(10)
+            x = max(x3) * 10 + x1 % 10
+            k = '惩罚'
+        if y == '':
+            group.send(MUGStr.RBP.format(tn,msg.text[2].upper(),x1,k,x2,x))
+        else:
+            group.send(MUGStr.RBPn.format(y,tn,msg.text[2].upper(),x1,k,x2,x))
+    elif (msg.text[0:3] == '.rc') | (msg.text[0:3] == '。rc') | (msg.text[0:3] == '.ra') | (msg.text[0:3] == '。ra'):#检定
+        d = randint(1,100)
+        k = msg.text[3:] if msg.text[3] != ' ' else msg.text[4:]
+        if ' ' in k:
+            x,y = k.split(' ')
+        else:
+            x = k
+            y = ''
+        try:
+            x = int(x)
+            if d > 95:
+                t = MUGStr.LFail
+            elif d > x:
+                t = MUGStr.Fail
+            elif d > x // 2:
+                t = MUGStr.Suc
+            elif d > x // 5:
+                t = MUGStr.HardSuc
+            else:
+                t = MUGStr.ExtremeSuc
+            group.send(MUGStr.RC.format(tn,y,d,t))    
+        except:
+            group.send(MUGStr.Err)
+    elif (msg.text[0:3] == '.rd') | (msg.text[0:3] == '。rd'):#将rd转化为。r1d
         if (len(msg.text) == 3) | (msg.text[3:4] == ' '):
             f = '.r1d100'+msg.text[3:]
         else:
@@ -145,11 +225,4 @@ def returner(msg):
             else:
                 group.send(MUGStr.ROLLn.format(z,tn,x,y,s,eval('floor('+str(dc)+t+')')))
         f = ''
-    if ('.choose ' in msg.text) | ('。choose ' in msg.text):
-        if ' ' in msg.text[8:]:
-            x = msg.text[8:].split(' ')
-        else:
-            x = msg.text[8:].split('/')
-        if len(x) >= 2:
-            group.send(MUGStr.choice.format(x[randint(0,len(x)-1)]))
 embed()
