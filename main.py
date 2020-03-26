@@ -12,7 +12,7 @@ from time import *
 from re import *
 from copy import *
 
-import MUGStr_3_1 as MUGStr
+import MUGStr
 
 bot = Bot(cache_path=True)
 bot.enable_puid('wxpy_puid.pkl')
