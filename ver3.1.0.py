@@ -1,4 +1,4 @@
-#######MUGbot VER 3.0.0######
+#######MUGbot VER 3.1.0######
 ##########BY  SAIKA##########
 #———————————————————————————#
 #MODIIFYING OF THIS FILE IS##
@@ -12,7 +12,7 @@ from time import *
 from re import *
 from copy import *
 
-import MUGStr_3 as MUGStr
+import MUGStr_3_1 as MUGStr
 
 bot = Bot(cache_path=True)
 bot.enable_puid('wxpy_puid.pkl')
@@ -81,6 +81,8 @@ def returner(msg):
             b1 = '诸事皆宜'
             b2 = ''
         group.send(MUGStr.jrrp.format(tn,dt,MUGStr.luk[rp[si]%10],a1,a2,b1,b2))
+    elif (msg.text == '.4k') | (msg.text == '。4k'):
+        group.send(MUGStr.File4K)
     elif (msg.text[0:3] == '.复读') | (msg.text[0:3] == '。复读'):#手动复读
         if ' ' in msg.text:
             if len(msg.text[4:]) > 50:
@@ -158,7 +160,7 @@ def returner(msg):
             y = ''
         try:
             x = int(x)
-            if d > 95:
+            if d > max(95,x):
                 t = MUGStr.LFail
             elif d > x:
                 t = MUGStr.Fail
