@@ -129,22 +129,22 @@ def returner(msg):
                 ac,usr,P,gr,gd,ms,acc = msg.text.split(' ')
             else:
                 ac,usr,P,gr,gd,ms,acc = msg.text.split('\n')
-            pic = Image.open('resources/'+ac+'.png')
-            ac = ('Stamina '+ac[1:3]) if ac[0] == 'S' else ac
-            ac = ('Raber '+ac[1:3]) if ac[0] == 'R' else ac
+            pic = Image.open('resources/'+ac+'.jpg')
+            ac = ('Stamina '+ac[1:]) if ac[0] == 'S' else ac
+            ac = ('Raber '+ac[1:]) if ac[0] == 'R' else ac
             usr = ac +' [Cleared by '+usr+']'
             dr = ImageDraw.Draw(pic)
-            fnt1 = ImageFont.truetype('resources/fonts/Cytus2.ttf',100)
-            fnt2 = ImageFont.truetype('resources/fonts/Exo-Regular.ttf',100)
-            fnt3 = ImageFont.truetype('resources/fonts/ALGER.ttf',100)
-            dr.text((50,20),usr,fill='yellow',font=fnt1)
-            dr.text((1650,230),P,fill='white',font=fnt2)
-            dr.text((1650,350),gr,fill='white',font=fnt2)
-            dr.text((1650,465),gd,fill='white',font=fnt2)
-            dr.text((1650,580),ms,fill='white',font=fnt2)
-            dr.text((1650,690),acc,fill='white',font=fnt3)
-            pic.save('resources/timg.png')
-            group.send_image('resources/timg.png')
+            fnt1 = ImageFont.truetype('resources/fonts/Cytus2.ttf',70)
+            fnt2 = ImageFont.truetype('resources/fonts/mvboli.ttf',60)
+            fnt3 = ImageFont.truetype('resources/fonts/ALGER.ttf',65)
+            dr.text((30,10),usr,fill='yellow',font=fnt1)
+            dr.text((1000,145),P,fill='white',font=fnt2)
+            dr.text((1000,220),gr,fill='white',font=fnt2)
+            dr.text((1000,295),gd,fill='white',font=fnt2)
+            dr.text((1000,370),ms,fill='white',font=fnt2)
+            dr.text((1000,455),acc,fill='white',font=fnt3)
+            pic.save('resources/timg.jpg')
+            group.send_image('resources/timg.jpg')
         except FileNotFoundError:
             group.send(MUGStr.File404)
         except:

@@ -1,2 +1,5 @@
 
 .DS_Store
+wxpy.pkl
+__pycache__/arcaea_crawler.cpython-37.pyc
+__pycache__/MUGStr.cpython-37.pyc

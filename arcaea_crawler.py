@@ -2,9 +2,7 @@ import websocket
 import brotli
 import json
 import websocket
-import ssl
 
-websocket.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE})
 clear_list = ['Track Lost', 'Normal Clear', 'Full Recall', 'Pure Memory', 'Easy Clear', 'Hard Clear']
 diff_list = ['PST', 'PRS', 'FTR']
 
