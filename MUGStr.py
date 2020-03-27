@@ -1,4 +1,4 @@
-######MUGStr VER 3.1.0#######
+######MUGStr VER 4.0.0#######
 ##########BY  ZTREN##########
 #———————————————————————————#
 #THIS FILE IS FREE TO MODIFY#
@@ -51,10 +51,18 @@ Fail = \
 '失败了的说，抱歉哦'#失败提示
 LFail = \
 '是大失败哦(･_･;保持斗志啊'#大失败提示
-Err = \
-'输入格式好像不太对的说'#输入有误
 File4K = \
 '''4k整合包：
 链接：https://pan.baidu.com/s/1Ohr5Nz1tx7j2WwaNecRGrA 
 提取码：6b42
 '''
+InputGradeData = \
+'请输入成绩信息～'
+File404 = \
+'没有找到文件哦'
+Crawling = \
+'正在爬取 {0} 的数据……'
+CrawlErr = \
+'好像出现了“{0}”的异常呢。'
+Err = \
+'输入格式好像不太对的说'#输入有误

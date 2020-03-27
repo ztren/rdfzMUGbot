@@ -1,4 +1,4 @@
-#######MUGbot VER 3.1.0######
+#######MUGbot VER 4.0.0######
 ##########BY  SAIKA##########
 #———————————————————————————#
 #MODIIFYING OF THIS FILE IS##
@@ -11,7 +11,12 @@ from math import *
 from time import *
 from re import *
 from copy import *
+from arcaea_crawler import *
 
+from PIL import Image
+from PIL import ImageFilter
+from PIL import ImageEnhance
+from PIL import ImageDraw , ImageFont
 import MUGStr
 
 bot = Bot(cache_path=True)
@@ -23,12 +28,12 @@ dt = strftime("%Y{0}%m{1}%d{2}", localtime()).format('年','月','日')
 pu = []
 nm = []
 rp = []
-rptnxt = False
 rpu = ''
+gru = ''
 
 @bot.register(group)       
 def returner(msg):
-    global pu,nm,rp,dt,rptnxt,rpu
+    global pu,nm,rp,dt,gru,rpu
     s = '[MUGBot]'
     f = ''
     if msg.member.puid not in pu:#第一次在群中出现的人的初始化
@@ -49,13 +54,12 @@ def returner(msg):
                 k = randint(0,6)+randint(0,len(MUGStr.obj)-1)*10+randint(0,len(MUGStr.obj)-1)*1000
             rp[i] = k
         dt = strftime("%Y{0}%m{1}%d{2}", localtime()).format('年','月','日')
-    if (rptnxt == True) & (pu[si] == rpu):
+    if (pu[si] == rpu):
         if msg.type == 'Picture':
             msg.forward(group)
         else:
             msg.forward(group,suffix = '——'+tn)
-        rptnxt = False
-        rpu = -1
+        rpu = ''
     if msg.type == 'Picture':
         if randint(1,15) == 1:
             s += MUGStr.nnn[randint(0,len(MUGStr.nnn)-1)]
@@ -83,6 +87,13 @@ def returner(msg):
         group.send(MUGStr.jrrp.format(tn,dt,MUGStr.luk[rp[si]%10],a1,a2,b1,b2))
     elif (msg.text == '.4k') | (msg.text == '。4k'):
         group.send(MUGStr.File4K)
+    elif (msg.text[0:4] == '.arc') | (msg.text[0:4] == '。arc'):
+        s = msg.text[5:] if msg.text[4] == ' ' else msg.text[4:]
+        group.send(MUGStr.Crawling.format(s))
+        try:
+            group.send(query(s))
+        except Exception as e:
+            group.send(MUGStr.CrawlErr.format(repr(e)))
     elif (msg.text[0:3] == '.复读') | (msg.text[0:3] == '。复读'):#手动复读
         if ' ' in msg.text:
             if len(msg.text[4:]) > 50:
@@ -90,8 +101,6 @@ def returner(msg):
             else:
                 group.send(MUGStr.rpt.format(msg.text[4:],tn))
         else:
-            
-            rptnxt = True
             rpu = pu[si]
             group.send(MUGStr.rptn)
     elif (msg.text[0:8] == '.choose ') | (msg.text[0:8] == '。choose '):
@@ -111,6 +120,36 @@ def returner(msg):
         else:
             nm[si] = msg.member.name
             group.send(MUGStr.NNForget.format(tn))
+    elif (msg.text[0:6] == '.grade') | (msg.text[0:6] == '。grade'):
+        gru = pu[si]
+        group.send(MUGStr.InputGradeData)
+    elif (pu[si] == gru):
+        try:
+            if ' ' in msg.text:
+                ac,usr,P,gr,gd,ms,acc = msg.text.split(' ')
+            else:
+                ac,usr,P,gr,gd,ms,acc = msg.text.split('\n')
+            pic = Image.open('resources/'+ac+'.png')
+            ac = ('Stamina '+ac[1:3]) if ac[0] == 'S' else ac
+            ac = ('Raber '+ac[1:3]) if ac[0] == 'R' else ac
+            usr = ac +' [Cleared by '+usr+']'
+            dr = ImageDraw.Draw(pic)
+            fnt1 = ImageFont.truetype('resources/fonts/Cytus2.ttf',100)
+            fnt2 = ImageFont.truetype('resources/fonts/Exo-Regular.ttf',100)
+            fnt3 = ImageFont.truetype('resources/fonts/ALGER.ttf',100)
+            dr.text((50,20),usr,fill='yellow',font=fnt1)
+            dr.text((1650,230),P,fill='white',font=fnt2)
+            dr.text((1650,350),gr,fill='white',font=fnt2)
+            dr.text((1650,465),gd,fill='white',font=fnt2)
+            dr.text((1650,580),ms,fill='white',font=fnt2)
+            dr.text((1650,690),acc,fill='white',font=fnt3)
+            pic.save('resources/timg.png')
+            group.send_image('resources/timg.png')
+        except FileNotFoundError:
+            group.send(MUGStr.File404)
+        except:
+            group.send(MUGStr.Err)
+        gru = ''
     elif (msg.text[0:3] == '.rb') | (msg.text[0:3] == '。rb') | (msg.text[0:3] == '.rp') | (msg.text[0:3] == '。rp'):#奖励骰/惩罚骰
         x1 = randint(1,100)
         x2 = []
