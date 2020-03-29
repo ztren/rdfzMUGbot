@@ -1,4 +1,4 @@
-######MUGStr VER 4.0.0#######
+######MUGStr VER 4.2.0#######
 ##########BY  ZTREN##########
 #———————————————————————————#
 #THIS FILE IS FREE TO MODIFY#

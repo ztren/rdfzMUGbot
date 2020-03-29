@@ -1,4 +1,4 @@
-#######MUGbot VER 4.0.0######
+#######MUGbot VER 4.2.0######
 ##########BY  SAIKA##########
 #———————————————————————————#
 #MODIIFYING OF THIS FILE IS##
