@@ -55,10 +55,12 @@ def returner(msg):
             rp[i] = k
         dt = strftime("%Y{0}%m{1}%d{2}", localtime()).format('年','月','日')
     if (pu[si] == rpu):
-        if msg.type == 'Picture':
+        if msg.type != 'Text':
             msg.forward(group)
-        else:
+        elif len(msg.text) <= 100:
             msg.forward(group,suffix = '——'+tn)
+        else:
+            group.send(s+'爬')
         rpu = ''
     if msg.type == 'Picture':
         if randint(1,15) == 1:
@@ -91,7 +93,54 @@ def returner(msg):
         s = msg.text[5:] if msg.text[4] == ' ' else msg.text[4:]
         group.send(MUGStr.Crawling.format(s))
         try:
-            group.send(query(s))
+            x1,x2,x3=query(s).split('###')
+            pic = Image.open('resources/arcscore.jpg')
+            pic = pic.convert('RGB')
+            kk = 0
+            try:
+                xx = float(x3)
+            except:
+                xx = 13
+            if xx < 7:
+                kk = 15
+                ptt = Image.open('resources/ptt/rating_1.png')
+            elif xx < 10:
+                kk = 15
+                ptt = Image.open('resources/ptt/rating_2.png')
+            elif xx < 11:
+                ptt = Image.open('resources/ptt/rating_3.png')
+            elif xx < 12:
+                kk = 15
+                ptt = Image.open('resources/ptt/rating_4.png')
+            elif xx < 12.5:
+                ptt = Image.open('resources/ptt/rating_5.png')
+            elif xx < 13:
+                ptt = Image.open('resources/ptt/rating_6.png')
+            else:
+                ptt = Image.open('resources/ptt/rating_off.png')
+            ptt = ptt.resize((300,300))
+            r,g,b,a = ptt.split()
+            dr = ImageDraw.Draw(pic)
+            fnt00 = ImageFont.truetype('resources/Fonts/arc-ptt.ttf',120)
+            fnt01 = ImageFont.truetype('resources/Fonts/arc-ptt.ttf',100)
+            fnt000 = ImageFont.truetype('resources/Fonts/arc-ptt.ttf',128)
+            fnt001 = ImageFont.truetype('resources/Fonts/arc-ptt.ttf',108)
+            fnt1 = ImageFont.truetype('resources/Fonts/msyhl.ttc',80)
+            fnt2 = ImageFont.truetype('resources/Fonts/arc-score.ttf',100)
+            pic.paste(ptt,(1000,400,1300,700),mask = a)
+            if xx != 13:
+                x3,x4 = x3.split('.')
+                dr.text((1011+kk+5,466),x3+'.',fill='#666666',font=fnt000)
+                dr.text((1164-kk,486),x4,fill='#666666',font=fnt001)
+                dr.text((1015+kk+5,470),x3+'.',fill='white',font=fnt00)
+                dr.text((1170-kk,490),x4,fill='white',font=fnt01)
+            else:
+                dr.text((1050,500),'--',fill='white',font=fnt00)
+            dr.text((1050,50),MUGStr.hikari[randint(0,len(MUGStr.hikari)-1)],fill='#FF8EAF',font=fnt1)
+            dr.text((1400,400),x1,fill='black',font=fnt2)
+            dr.text((900,600),x2,fill='black',font=fnt2)
+            pic.save('resources/timg.jpg')
+            group.send_image('resources/timg.jpg')
         except Exception as e:
             group.send(MUGStr.CrawlErr.format(repr(e)))
     elif (msg.text[0:3] == '.复读') | (msg.text[0:3] == '。复读'):#手动复读
@@ -242,7 +291,7 @@ def returner(msg):
                     t = ''
         dc = 0
         if (int(x) > 100) | (int(y) > 100000):
-            group.send(s+'爬')
+            group.send('[MUGBot]爬')
         else:
             for i in range(1,int(x)+1):
                 k = randint(1,int(y))

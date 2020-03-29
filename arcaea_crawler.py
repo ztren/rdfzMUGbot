@@ -60,10 +60,10 @@ def query(id: str):
     s = ""
     song_title, userinfo, scores = _query(id)
     b, r = calc(userinfo['rating'] / 100, scores)
-    s += "Player: %s\nPotential: %.2f\nBest 30: %.5f\nRecent Top 10: %.5f\n\n" % (userinfo['name'], userinfo['rating'] / 100, b, r)
+    s += "Player: %s\nB30: %.5f\nR10: %.5f\n###\n" % (userinfo['name'], b, r)
     score = userinfo['recent_score'][0]
-    s += "Recent Play: \n%s  %s %.1f  \n%s\nPure: %d(%d)\nFar: %d\nLost: %d\nScore: %d\nRating: %.2f" % (song_title[score['song_id']]['en'], diff_list[score['difficulty']], score['constant'], clear_list[score['clear_type']],
-              score["perfect_count"], score["shiny_perfect_count"], score["near_count"], score["miss_count"], score["score"], score["rating"])
+    s += "Recent Play: \n%s\n%s %.1f  \n%s\nPure: %d(%d)\nFar: %d\nLost: %d\nScore: %d\nRating: %.2f\n###%.2f" % (song_title[score['song_id']]['en'], diff_list[score['difficulty']], score['constant'], clear_list[score['clear_type']],
+              score["perfect_count"], score["shiny_perfect_count"], score["near_count"], score["miss_count"], score["score"], score["rating"], userinfo['rating'] / 100)
     return s
 
 
