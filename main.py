@@ -1,4 +1,4 @@
-#######MUGbot VER 4.2.0######
+#######MUGbot VER 4.2.1######
 ##########BY  SAIKA##########
 #———————————————————————————#
 #MODIIFYING OF THIS FILE IS##
@@ -64,8 +64,11 @@ def returner(msg):
         rpu = ''
     if msg.type == 'Picture':
         if randint(1,15) == 1:
-            s += MUGStr.nnn[randint(0,len(MUGStr.nnn)-1)]
-            group.send(s)
+            if randint(1,3) == 1:
+                msg.forward(group)
+            else:
+                s += MUGStr.nnn[randint(0,len(MUGStr.nnn)-1)]
+                group.send(s)
     elif msg.type == 'Text':
         if randint(1,15) == 1:
             if randint(1,3) == 1:

@@ -1,4 +1,4 @@
-######MUGStr VER 4.2.0#######
+######MUGStr VER 4.2.1#######
 ##########BY  ZTREN##########
 #———————————————————————————#
 #THIS FILE IS FREE TO MODIFY#
@@ -54,8 +54,8 @@ LFail = \
 '是大失败哦(･_･;保持斗志啊'#大失败提示
 File4K = \
 '''4k整合包：
-链接：https://pan.baidu.com/s/1Ohr5Nz1tx7j2WwaNecRGrA 
-提取码：6b42
+链接：https://pan.baidu.com/s/1c0AToF8il4FmB6cGKymKag 
+提取码：muqf
 '''
 InputGradeData = \
 '请输入成绩信息～'
