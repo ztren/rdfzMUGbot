@@ -1,4 +1,4 @@
-#######MUGbot VER 4.2.1######
+#######MUGbot VER 4.2.2######
 ##########BY  SAIKA##########
 #———————————————————————————#
 #MODIIFYING OF THIS FILE IS##
@@ -71,7 +71,10 @@ def returner(msg):
                 group.send(s)
     elif msg.type == 'Text':
         if randint(1,15) == 1:
-            if randint(1,3) == 1:
+            if randint(1,9) == 1:
+                s += MUGStr.god[randint(0,len(MUGStr.god)-1)] + '是神！'
+                group.send(s)
+            elif randint(1,3) == 1:
                 s += MUGStr.atr[randint(0,len(MUGStr.atr)-1)]
                 group.send(s)
             elif len(msg.text) <= 50:
